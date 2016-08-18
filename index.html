@@ -46,7 +46,7 @@ var link = document.createElement( 'link' );
     <div id="header-white">
         <div id="print-never">
         <center>
-            <h3>QEMU Coroutines, Exposed</h3>
+            <h1>QEMU Coroutines, Exposed</h1>
             <small>
                 Jeff Cody | <a href="mailto:jcody@redhat.com"> jcody@redhat.com </a>
                 <br>
@@ -61,7 +61,7 @@ var link = document.createElement( 'link' );
 
     <!-- Any section element inside of this container is displayed as a slide -->
     <div class="slides">
-        <section data-state="header-visible no-dark-overlay"
+        <section data-state="header-visible no-dark-overlay logo-light"
                  data-background-video="../resources/videos/falls-loop.webm"
                  data-background-video-loop="true"
                  data-background="#111111" id="print-never">
@@ -72,11 +72,14 @@ var link = document.createElement( 'link' );
 
         <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
             <section>
-                <h2 class="alt">What are Coroutines?</h2>
-                <div class="fragment" data-fragment-index="1">A way for QEMU to do </div> 
+                <h2 class="alt fragment fade-out" data-fragment-index="1">The 15,000 Meter View</h2>
+                <div class="fragment" data-fragment-index="1">
+                    <h2 class="alt">What are Coroutines?</h2>
+                </div>
+                <div class="fragment" data-fragment-index="2">A way for QEMU to do </div> 
                 <div id="container">
-                    <div class="fragment" data-fragment-index="2" id="shelf">cooperative,</font></div> 
-                    <div class="fragment" data-fragment-index="1" id="shelf">concurrent multitasking </div> 
+                    <div class="fragment" data-fragment-index="3" id="shelf">cooperative,</font></div> 
+                    <div class="fragment" data-fragment-index="2" id="shelf">concurrent multitasking </div> 
                 </div>
                 <div id="container">
                 </div>
@@ -162,7 +165,42 @@ var link = document.createElement( 'link' );
             </section>
         </section>
 
+        <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
+            <section>
+                <h2 class="alt fragment fade-out" data-fragment-index="1">The 10,000 Meter View</h2>
+                <h3 class="alt fragment" data-fragment-index="1">Coroutine Lifecycle</h3>
+            </section>
+        </section>
 
+        <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
+            <section>
+                <h3 class="alt">Coroutines Creation - ucontext </h3>
+                <div class="fragment small" data-fragment-index="1">Mixture of ucontext/makecontext and sigsetjmp/siglongjmp</div> 
+            </section>
+            <section>
+                <h3 class="alt">Coroutines Creation - ucontext </h3>
+                <div class="fragment alt">
+<pre><code>Coroutine *qemu_coroutine_new(void)
+{
+
+/*  [...] */
+
+    arg.p = co;
+
+    makecontext(&uc, (void (*)(void))coroutine_trampoline,
+                2, arg.i[0], arg.i[1]);
+
+    /* swapcontext() in, siglongjmp() back out */
+    if (!sigsetjmp(old_env, 0)) {
+        swapcontext(&old_uc, &uc);
+    }
+    return &co->base;
+}</code></pre>
+                </div>
+
+                
+            </section>
+        </section>
 
 
 
