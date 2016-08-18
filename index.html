@@ -1,50 +1,280 @@
 <!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<html lang="en">
 
-		<title>reveal.js</title>
+<head>
+<meta charset="utf-8">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+<title>QEMU Coroutines, Exposed</title>
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+<meta name="author" content="Jeff Cody">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet" href="css/reveal.min.css">
+<link rel="stylesheet" href="css/theme/jtc-redhat.css" id="theme">
+
+<!-- For syntax highlighting -->
+<link rel="stylesheet" href="lib/css/zenburn.css">
+
+<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+<script>
+var link = document.createElement( 'link' );
 			link.rel = 'stylesheet';
 			link.type = 'text/css';
 			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+</script>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+<!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+<link rel="import" href="http://localhost:3000/init1.html">
+</head>
 
-		<script>
-			// More info https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				history: true,
+<body>
 
-				// More info https://github.com/hakimel/reveal.js#dependencies
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+<div class="reveal">
+    <div id="print-never">
+    <div id="dark-overlay">
+    </div>
+    </div>
+    <a id="logo-black"><img src="../resources/images/Red_Hat_RGB_reverse.png" alt=""/></a>
+    <a id="logo-white"><img src="../resources/images/Red_Hat_RGB.png" alt=""/></a>
+    <div id="header-white">
+        <div id="print-never">
+        <center>
+            <h3>QEMU Coroutines, Exposed</h3>
+            <small>
+                Jeff Cody | <a href="mailto:jcody@redhat.com"> jcody@redhat.com </a>
+                <br>
+                Toronto, ON<br>
+                August 26, 2016<br>
+                Presentation available at: <a href="http://qemu.rocks/jtc-kvm2016">http://qemu.rocks/jtc-kvm2016</a>
+            </small>
+        </center>
+       </div>
+    </div>
+
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section data-state="header-visible no-dark-overlay"
+                 data-background-video="../resources/videos/falls-loop.webm"
+                 data-background-video-loop="true"
+                 data-background="#111111" id="print-never">
+        </section>
+
+
+
+
+        <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
+            <section>
+                <h2 class="alt">What are Coroutines?</h2>
+                <div class="fragment" data-fragment-index="1">A way for QEMU to do </div> 
+                <div id="container">
+                    <div class="fragment" data-fragment-index="2" id="shelf">cooperative,</font></div> 
+                    <div class="fragment" data-fragment-index="1" id="shelf">concurrent multitasking </div> 
+                </div>
+                <div id="container">
+                </div>
+            </section>
+            <section>
+                <h2 class="alt">Coroutines vs. Threads</h2>
+                <div id="list">
+                    <ul class="fragment" data-fragment-index="1">
+                        <li>Threads
+                            <ul class="fragment" data-fragment-index="2">
+                                <li> OS Managed </li>
+                                <li> Preemptive (usually) </li>
+                            </ul>
+                        </li>
+                        <li> Coroutines (aka Fibers)
+                            <ul class="fragment" data-fragment-index="3">
+                                <li> Userspace Managed </li>
+                                <li> Cooperative </li>
+                                <li> Lower transactional overhead </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                <div class="fragment fade-out small" data-fragment-index="2">What does QEMU use? </div> 
+                <h4 class="fragment alt" data-fragment-index="1">QEMU is a hybrid architecture.</h4>
+                <div id="container">
+                <div class="fragment shelf small" data-fragment-index="2" id="shelf">Threads are used (vcpu), </div> 
+                <div class="fragment shelf small" data-fragment-index="2" id="shelf">&nbsp; &nbsp; &nbsp; in addition to coroutines (mainly in block layer) </div> 
+                </div>
+            </section>
+        </section>
+
+
+
+
+
+
+
+        <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
+            <section data-transition="slide-in fade-out" transition-speed="fast">
+                <h2 class="alt">Coroutines in QEMU</h2>
+                <div class="fragment" data-fragment-index="1">Multiple implementations: </div> 
+                <div id="list">
+                    <ul>
+                        <li class="fragment">ucontext
+                            <ul>
+                                <li>Default, most "mileage"</li>
+                                <li>Not on all platforms</li>
+                            </ul>
+                        </li>
+                        <li class="fragment">sigaltstack
+                            <ul>
+                                <li>Newer, as of 2013 (Alex Barcelo)</li>
+                                <li>Available on most platforms</li>
+                                <li>Not as well tested?</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section data-transition="fade-in slide-out" transition-speed="fast">
+                <h2 class="alt">Coroutines in QEMU</h2>
+                Less common implementations:
+                <div id="list">
+                    <ul>
+                        <li class="fragment">win32
+                            <ul>
+                                <li>Uses Windows Fibers</li>
+                                <li>Windows-only</li>
+                            </ul>
+                        </li>
+                        <li class="fragment">gthreads
+                            <ul>
+                                <li>Slow</li>
+                                <li>Not really functional</li>
+                                <li>Debug only (anyone using it?)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </section>
+
+
+
+
+
+
+    <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
+        <section data-state="no-dark-overlay">
+            <h2 class="alt">Questions?</h2>
+            <img src="../resources/images/simpsons-no-loop.gif" height=500px id="print-never">
+        </section>
+    </section>
+
+
+    <section data-background-image="../resources/images/TorontoSkyline.jpg"
+             data-state="footer-visible">
+        <div id="footer-white">
+        <h1 class="alt">THE END</h1>
+        <hr>
+        <h4>Jeff Cody | <font color=#cb2026> Red Hat, Inc.</font></h4>
+            <small>
+        <div style="background-color:#000000;opacity:0.7">
+                Presentation available at: <a href="http://qemu.rocks/jtc-kvm2016">http://qemu.rocks/jtc-kvm2016</a>
+        </div>
+            </small>
+        <small style="font-size: 0.38em">Intro video modified from <a href="https://vimeo.com/55118109">Antoine Poggette's "Toronto"</a>
+            <br>
+            Video licensed under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>
+            <br>
+        </small>
+        <small style="font-size: 0.38em">End slide photo by <a href="https://www.flickr.com/photos/farhannasir/4857608654">Farhan Amoor</a>
+            <br>
+            Photo licensed under <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>
+            <br>
+        </small>
+        </div>
+    </section>
+
+</div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
+
+<div id="initializer">
+<!-- grabstart -->
+<script>
+
+var printaction = window.location.search.match( /print-pdf/gi ) ? 'printing' : '';
+//var parallaxImage;
+if (printaction) {
+    document.body.style.backgroundImage="url('../resources/images/jeffcody-droplet_0867-1056x769.JPG')";
+    document.body.style.backgroundRepeat="repeat-y";
+} else {
+//    document.body.style.backgroundImage="url('../resources/images/redhat/1748213-drawing2.svg')";
+//    parallaxImage = '../resources/images/jeffcody-droplet_0867-2500x1406-dark-lowsat.JPG';
+}
+
+
+
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+controls: true,
+progress: true,
+history: true,
+center: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'slide', // default/cube/page/concave/zoom/linear/fade/none
+
+//parallaxBackgroundImage: parallaxImage,
+//parallaxBackgroundSize: '2500px 1406px',
+
+multiplex: {
+    // Example values. To generate your own, see the socket.io server instructions.
+    secret: 'null', // Obtained from the socket.io server. Gives this (the master) control of the presentation
+    id: 'e74af6d20e374e17', // Obtained from socket.io server
+    url: 'revealjs.jit.su:80' // Location of socket.io server
+},
+
+
+// Optional libraries used to extend on reveal.js
+//     { src: 'http://revealjs.jit.su/socket.io/socket.io.js', async: true }, 
+dependencies: [
+{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+{ src: '//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js', async: true },
+{ src: 'plugin/multiplex/client.js', async: true },
+{ src: 'plugin/multiplex/master.js', async: true }
+]
+});
+
+</script>
+<!-- grabend -->
+</div>
+
+<script>
+var link = document.querySelector('link[rel="import"]');
+var content = link.import;
+
+var template = link.import.querySelector('template');
+var clone = document.importNode(template.content, true);
+
+if (clone) {
+    document.querySelector('#initializer').innerHTML = '';
+    document.querySelector('#initializer').appendChild(clone);
+}
+</script>
+
+</body>
 </html>
