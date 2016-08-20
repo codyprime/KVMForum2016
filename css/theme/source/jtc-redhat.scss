@@ -111,12 +111,11 @@ $mainFontSize: 48px;
 .reveal h1.alt,
 .reveal h2.alt {
   margin: 0 0 20px 0;
-  color: #eee8d5;
+  color: #387eb0;
 //  line-height: $headingLineHeight;
 //  letter-spacing: $headingLetterSpacing;
 //  text-transform: $headingTextTransform;
 //   -webkit-text-stroke: 1px black;
-   color: white;
 //   text-shadow:
 //       3px 3px 0 #000,
 //     -1px -1px 0 #000,  
@@ -155,7 +154,7 @@ $mainFontSize: 48px;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,128,0.5);
 	box-shadow: -10px 10px 40px rgba(0,0,0,0.9);
 }
 
@@ -283,6 +282,25 @@ $mainFontSize: 48px;
     margin: auto;
     float: left;
     padding: 0 0.25em 0 0.25em;
+}
+
+.image_container {
+    position: relative;
+    margin: auto;
+    left: 20%;
+}
+
+.image {
+    position: absolute;
+    border: 1px solid red;
+}
+
+.image1 {
+    z-index: 0;
+}
+
+.image2 {
+    z-index: 1;
 }
 
 .reveal .small {
