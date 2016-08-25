@@ -215,6 +215,15 @@ var link = document.createElement( 'link' );
             </section>
             <section>
                 <h3>What is a Coroutine:</h3>
+                <div data-svg-fragment="../resources/images/KVMForum2016/coroutine-state-diagram.svg#[*|label=base]">
+                    <a class="fragment" data-fragment-index="1" title="[*|label=fragment1]"></a>
+                    <a class="fragment" data-fragment-index="2" title="[*|label=fragment2]"></a>
+                    <a class="fragment" data-fragment-index="4" title="[*|label=fragment3]"></a>
+                    <a class="fragment" data-fragment-index="5" title="[*|label=fragment4]"></a>
+                    <a class="fragment" data-fragment-index="6" title="[*|label=fragment5]"></a>
+                </div>
+            </section>
+            <section>
                 <h3>The Coroutine Structure</h3>
                 <div data-svg-fragment="../resources/images/KVMForum2016/coroutine-struct-full-code.svg#[*|label=base]">
                     <a class="fragment" data-fragment-index="1" title="[*|label=fragment1]"></a>
@@ -283,7 +292,6 @@ var link = document.createElement( 'link' );
                     <a class="fragment" data-fragment-index="10" title="[*|label=fragment6]"></a>
                 </div>
             </section>
-        </section>
         <section>
             <h3>Using Coroutines, Part 3</h3>
             CoMutex API Functions:
@@ -291,6 +299,7 @@ var link = document.createElement( 'link' );
         <section>
             <h3>Using Coroutines, Part 4</h3>
             Lock API Functions:
+        </section>
         </section>
 
     <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
@@ -404,6 +413,38 @@ var link = document.createElement( 'link' );
             <div data-svg-fragment="../resources/images/KVMForum2016/opengroup-siglongjmp.svg#[*|label=base]">
                 <a class="fragment" data-fragment-index="1" title="[*|label=fragment1]"></a>
             </div>
+        </section>
+        <section>
+
+            <div class="fragment alt">
+            <pre><code>/*
+ * we want to use bottom half because we want to make sure the below
+ * sequence of events.
+ *
+ *   1. Yield the coroutine in the QEMU thread.
+ *   2. Submit the coroutine to a worker thread.
+ *   3. Enter the coroutine in the worker thread.
+ * we cannot swap step 1 and 2, because that would imply worker thread
+ * can enter coroutine while step1 is still running
+ */
+#define v9fs_co_run_in_worker(code_block)                               \
+    do {                                                                \
+        QEMUBH *co_bh;                                                  \
+        co_bh = qemu_bh_new(co_run_in_worker_bh,                        \
+                            qemu_coroutine_self());                     \
+        qemu_bh_schedule(co_bh);                                        \
+        /*                                                              \
+         * yield in qemu thread and re-enter back                       \
+         * in worker thread                                             \
+         */                                                             \
+        qemu_coroutine_yield();                                         \
+        qemu_bh_delete(co_bh);                                          \
+        code_block;                                                     \
+        /* re-enter back to qemu thread */                              \
+        qemu_coroutine_yield();                                         \
+    } while (0)</pre></code>
+            </div>
+
         </section>
     </section>
 
