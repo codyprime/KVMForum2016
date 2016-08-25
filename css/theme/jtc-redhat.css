@@ -210,6 +210,16 @@ html * {
   float: left;
   padding: 0 0.25em 0 0.25em; }
 
+.reveal .container {
+  position: relative;
+  background: #999999;
+  margin: auto; }
+
+.reveal .shelf {
+  margin: auto;
+  float: left;
+  padding: 0 0.25em 0 0.25em; }
+
 .image_container {
   position: relative;
   margin: auto;
@@ -226,7 +236,10 @@ html * {
   z-index: 1; }
 
 .reveal .small {
-  font-size: 0.7em; }
+  font-size: 0.6em; }
+
+.reveal .smaller {
+  font-size: 0.59em; }
 
 #print-only {
   display: none; }
