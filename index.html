@@ -238,177 +238,57 @@ var link = document.createElement( 'link' );
                     <a class="fragment" data-fragment-index="12" title="[*|label=fragment11]"></a>
                     <a class="fragment" data-fragment-index="13" title="[*|label=fragment12]"></a>
                 </div>
-
-<!--
-                <div class="image_container">
-                    <div class="image image1 fragment" data-fragment-index="3">
-                        <img src="../resources/images/KVMForum2016/coroutine-struct-full-code.svg"
-                             style="background:none; border:none; box-shadow:none;">
-                    </div>
-                    <div class="image image1 fragment" data-fragment-index="2">
-                        <img src="../resources/images/KVMForum2016/simple-coroutine-struct.svg"
-                             style="background:none; border:none; box-shadow:none;">
-                    </div>
-                </div> -->
                 <br><br>
                 <br><br>
                 <br><br>
             </section>
-            <section data-transition="none">
+            <section>
                 <h3>Using Coroutines, Part 1</h3>
+                Core API Functions:
                 <div data-svg-fragment="../resources/images/KVMForum2016/apis-1.svg#[*|label=base]">
                     <a class="fragment" data-fragment-index="1" title="[*|label=fragment1]"></a>
-                    <a class="fragment" data-fragment-index="2" title="[*|label=fragment2]"></a>
-                    <a class="fragment" data-fragment-index="3" title="[*|label=fragment3]"></a>
-                    <a class="fragment" data-fragment-index="4" title="[*|label=fragment4]"></a>
-                    <a class="fragment" data-fragment-index="5" title="[*|label=fragment5]"></a>
-                </div>
-                <div>
+                    <a class="fragment" data-fragment-index="2" title="[*|label=fragment1a]"></a>
+                    <a class="fragment" data-fragment-index="3" title="[*|label=fragment2]"></a>
+                    <a class="fragment" data-fragment-index="4" title="[*|label=fragment2a]"></a>
+                    <a class="fragment" data-fragment-index="5" title="[*|label=fragment3]"></a>
+                    <a class="fragment" data-fragment-index="6" title="[*|label=fragment3a]"></a>
+                    <a class="fragment" data-fragment-index="7" title="[*|label=fragment4]"></a>
+                    <a class="fragment" data-fragment-index="8" title="[*|label=fragment4a]"></a>
                 </div>
             </section>
-
-
-
-
             <section>
+                <h3>CoQueue</h3>
+                <div id="list">
+                    <ul>
+                        <li class="fragment">
+                            Simple a queue of coroutines to be run
+                        </li>
+                        <li class="fragment">
+                            Queue entries can be scheduled to "wake up"
+                            <ul>
+                                <li class="fragment">
+                                    Woken entries run after yield/terminate
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
 
-<!--
-                <div class="shelf">
-                    <p>
-                    <div class="smaller">
-                        <font color="#ede490">1.</font> Creating a Coroutine
-                        <br>
-                        &nbsp; &nbsp; &nbsp; &bull; &nbsp;<font color="ede490">qemu_coroutine_create</font>
-                        <br>
-                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Creates coroutine context
-                        <br>
-                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pauses before entry function
-                        <br>
-                    </div>
-                    </p>
-                </div>
-                <div class="shelf">
-                    <p>
-                    <font color="#ede490">2.</font> Entering a Coroutine
-                    <div class="smaller">
-                        <br>
-                        &nbsp; &nbsp; &nbsp; &bull; &nbsp;<font color="ede490">qemu_coroutine_enter</font>
-                        <br>
-                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Enters at last pause point
-                        <br>
-                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Only way to resume coroutine
-                        <br>
-                    </div>
-                    </p>
-                </div>
--->
-
-                <div class="small "id="list">
-                <ul id="list">
-                    <li class="fragment" data-fragment-index="1">
-                        1. Creating a Coroutine
-                        <ul>
-                            <li class="fragment" data-fragment-index="2">
-                                qemu_coroutine_create
-                                <ul class="small">
-                                    <li>
-                                        Creates the Coroutine context
-                                    </li>
-                                    <li>
-                                        Pauses before entry function
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <br>
-                        <br>
-                        <br>
-                    </li>
-                    <li class="fragment" data-fragment-index="1">
-                        2. Entering the coroutine
-                        <ul class="small">
-                            <li class="fragment" data-fragment-index="2">
-                                qemu_coroutine_enter
-                                <ul class="small">
-                                    <li>
-                                        Enters at last pause point
-                                    </li>
-                                    <li>
-                                        Conceptually, a "resume"
-                                        <li>
-                                            The only way to enter
-                                        </li>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <br>
-                        <br>
-                        <br>
-                    </li>
-                    <li class="fragment" data-fragment-index="1">
-                        3. Pausing the Coroutine
-                        <ul class="small">
-                            <li class="fragment" data-fragment-index="2">
-                                qemu_coroutine_yield
-                                <ul class="small">
-                                    <li>
-                                        Execution resumes at qemu_coroutine_enter() caller
-                                        <ul>
-                                            <li> 
-                                                (eventually)
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
                 </div>
             </section>
-        </section>
-        <section>
-                <div>
-                    Coroutine API, part 1:<br>Creation, Entering, Pausing
-                </div>
-                <div class="small "id="list">
-                <ul id="list">
-                    <li class="fragment" data-fragment-index="1">
-                        1. Creating a Coroutine
-                        <ul>
-                            <li class="fragment" data-fragment-index="2">
-                                qemu_coroutine_create
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="fragment" data-fragment-index="1">
-                        2. Entering the coroutine
-                        <ul class="small">
-                            <li class="fragment" data-fragment-index="2">
-                                qemu_coroutine_enter
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="fragment" data-fragment-index="1">
-                        3. Pausing the Coroutine
-                        <ul class="small">
-                            <li class="fragment" data-fragment-index="2">
-                                qemu_coroutine_yield
-                                <ul class="small">
-                                    <li>
-                                        Execution resumes at qemu_coroutine_enter() caller
-                                        <ul>
-                                            <li> 
-                                                (eventually)
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+            <section>
+                <h3>Using Coroutines, Part 2</h3>
+                CoQueue API Functions:
+                <div data-svg-fragment="../resources/images/KVMForum2016/apis-2.svg#[*|label=base]">
+                    <a class="fragment" data-fragment-index="1" title="[*|label=fragment1]"></a>
+                    <a class="fragment" data-fragment-index="2" title="[*|label=fragment1a]"></a>
+                    <a class="fragment" data-fragment-index="3" title="[*|label=fragment2]"></a>
+                    <a class="fragment" data-fragment-index="4" title="[*|label=fragment2a]"></a>
+                    <a class="fragment" data-fragment-index="5" title="[*|label=fragment3]"></a>
+                    <a class="fragment" data-fragment-index="6" title="[*|label=fragment3a]"></a>
+                    <a class="fragment" data-fragment-index="7" title="[*|label=fragment4]"></a>
+                    <a class="fragment" data-fragment-index="8" title="[*|label=fragment4a]"></a>
+                    <a class="fragment" data-fragment-index="9" title="[*|label=fragment5]"></a>
+                    <a class="fragment" data-fragment-index="10" title="[*|label=fragment6]"></a>
                 </div>
             </section>
         </section>
