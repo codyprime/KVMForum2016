@@ -98,15 +98,7 @@ var link = document.createElement( 'link' );
                             </ul>
                         </li>
                         <li class="fragment">
-                            1 meter
-                            <ul>
-                                <li>
-                                    The Life and Times of a Coroutine
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="fragment">
-                            The problem with Coroutines
+                            The problems with Coroutines
                         </li>
                     </ul>
                 </div>
@@ -292,22 +284,58 @@ var link = document.createElement( 'link' );
                 </div>
             </section>
         </section>
+        <section>
+            <h3>Using Coroutines, Part 3</h3>
+            CoMutex API Functions:
+        </section>
+        <section>
+            <h3>Using Coroutines, Part 4</h3>
+            Lock API Functions:
+        </section>
 
-
-        <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
+    <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
+       <section>
+           <h2 class="alt fragment fade-out" data-fragment-index="2">The 100 Meter View</h2>
+           <h3 class="fragment" data-fragment-index="2">Underneath it all</h3>
+       </section>
             <section>
                 <h3>Coroutines Creation - ucontext </h3>
                 <div class="fragment small" data-fragment-index="1">
-                    Mixture of ucontext/makecontext and sigsetjmp/siglongjmp</div>
+                    Or, fun with trampolines
+                </div>
                 <br>
-                <ul id="list">
-                    <li class="fragment" data-fragment-index="1">
-                        Faster than using ucontext for all non-local gotos
-                    </li>
-                    <li class="fragment" data-fragment-index="2">
-                        makecontext / swapcontext used in the initial coroutine creation
-                    </li>
-                </ul>
+                <div id="list">
+                    <ul>
+                        <li class="fragment" data-fragment-index="2">
+                            getcontext  / makecontext initializes stack
+                            <ul>
+                                <li class="fragment" data-fragment-index="2">
+                                    coroutine_trampoline
+                                </li>
+                                <li class="fragment" data-fragment-index="2">
+                                    current environment saved as uc_link
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="fragment" data-fragment-index="3">
+                            jump on the trampline
+                            <ul>
+                                <li class="fragment" data-fragment-index="4">
+                                    swapcontext() does the jump
+                                </li>
+                                <li class="fragment" data-fragment-index="4">
+                                    jmp_buf saved before coroutine fn call
+                                </li>
+                                <li class="fragment" data-fragment-index="4">
+                                    jump back to the caller
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="fragment" data-fragment-index="5">
+                            next siglongjmp to saved jmp_buf will start fn
+                        </li>
+                    </ul>
+                </div>
             </section>
             <section>
                 <h3>Coroutines Creation - ucontext </h3>
@@ -335,34 +363,49 @@ var link = document.createElement( 'link' );
       </section>
 
 
-    <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
-       <section>
-           <h2 class="alt fragment fade-out" data-fragment-index="2">The 100 Meter View</h2>
-           <h3 class="fragment" data-fragment-index="2">Underneath it all</h3>
-       </section>
-    </section>
-
-
-
-
-    <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
-        <section>
-            <h2 class="alt fragment fade-out" data-fragment-index="2">The 10 Meter View</h2>
-            <h3 class="fragment" data-fragment-index="2">Lifecycle of a Coroutine</h3>
-        </section>
-    </section>
-
-
-
 
     <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
         <section>
             <h2 class="alt fragment">What's Wrong with Coroutines?</h2>
         </section>
+        <section>
+            <div id="list">
+                <ul>
+                    <li class="fragment">
+                        Portability / Platform availability
+                        <ul>
+                            <li>
+                                Many methods have limited availability
+                            </li>
+                            <li>
+                                Different implementations for different platforms
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="fragment">
+                        Coroutine implementation is complex
+                        <ul>
+                            <li>
+                                Does make usage easier and less error-prone
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="fragment">
+                        Can rely on compiler / glibc specific behavior
+                        <ul>
+                            <li>
+                                Maybe this is fine
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+        </section>
+        <section>
+            <div data-svg-fragment="../resources/images/KVMForum2016/opengroup-siglongjmp.svg#[*|label=base]">
+                <a class="fragment" data-fragment-index="1" title="[*|label=fragment1]"></a>
+            </div>
+        </section>
     </section>
-
-
-
 
 
     <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
