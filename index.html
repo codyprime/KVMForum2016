@@ -229,65 +229,18 @@ var link = document.createElement( 'link' );
 
 
 
-
-        <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
-            <section data-transition="slide-in fade-out" transition-speed="fast">
-                <h2>Coroutines in QEMU</h2>
-                <div class="fragment" data-fragment-index="1">Multiple implementations: </div> 
-                <div id="list">
-                    <ul>
-                        <li class="fragment">ucontext
-                            <ul>
-                                <li>Default, most "mileage"</li>
-                                <li>Not on all platforms</li>
-                            </ul>
-                        </li>
-                        <li class="fragment">sigaltstack
-                            <ul>
-                                <li>Newer, as of 2013 (Alex Barcelo)</li>
-                                <li>Available on most platforms</li>
-                                <li>Not as well tested?</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </section>
-            <section data-transition="fade-in slide-out" transition-speed="fast">
-                <h2>Coroutines in QEMU</h2>
-                Less common implementations:
-                <div id="list">
-                    <ul>
-                        <li class="fragment">win32
-                            <ul>
-                                <li>Uses Windows Fibers</li>
-                                <li>Windows-only</li>
-                            </ul>
-                        </li>
-                        <li class="fragment">gthreads
-                            <ul>
-                                <li>Slow</li>
-                                <li>Not really functional</li>
-                                <li>Debug only (anyone using it?)</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </section>
-        </section>
-
         <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
             <section>
                 <h2 class="alt fragment fade-out" data-fragment-index="2">The 10,000 Meter View</h2>
                 <h3 class="fragment" data-fragment-index="2">The Coroutine API</h3>
             </section>
             <section>
-                <h3>What is a Coroutine:</h3>
+                <h3>Statues of a Coroutine</h3>
                 <div data-svg-fragment="../resources/images/KVMForum2016/coroutine-state-diagram.svg#[*|label=base]">
                     <a class="fragment" data-fragment-index="1" title="[*|label=fragment1]"></a>
                     <a class="fragment" data-fragment-index="2" title="[*|label=fragment2]"></a>
-                    <a class="fragment" data-fragment-index="4" title="[*|label=fragment3]"></a>
-                    <a class="fragment" data-fragment-index="5" title="[*|label=fragment4]"></a>
-                    <a class="fragment" data-fragment-index="6" title="[*|label=fragment5]"></a>
+                    <a class="fragment" data-fragment-index="3" title="[*|label=fragment3]"></a>
+                    <a class="fragment" data-fragment-index="5" title="[*|label=fragment5]"></a>
                 </div>
             </section>
             <section>
@@ -374,48 +327,90 @@ var link = document.createElement( 'link' );
            <h2 class="alt fragment fade-out" data-fragment-index="2">The 100 Meter View</h2>
            <h3 class="fragment" data-fragment-index="2">Underneath it all</h3>
        </section>
-            <section>
-                <h3>Coroutines Creation - ucontext </h3>
-                <div class="fragment small" data-fragment-index="1">
-                    Or, fun with trampolines
-                </div>
-                <br>
-                <div id="list">
-                    <ul>
-                        <li class="fragment" data-fragment-index="2">
-                            getcontext  / makecontext initializes stack
-                            <ul>
-                                <li class="fragment" data-fragment-index="2">
-                                    coroutine_trampoline
-                                </li>
-                                <li class="fragment" data-fragment-index="2">
-                                    current environment saved as uc_link
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="fragment" data-fragment-index="3">
-                            jump on the trampline
-                            <ul>
-                                <li class="fragment" data-fragment-index="4">
-                                    swapcontext() does the jump
-                                </li>
-                                <li class="fragment" data-fragment-index="4">
-                                    jmp_buf saved before coroutine fn call
-                                </li>
-                                <li class="fragment" data-fragment-index="4">
-                                    jump back to the caller
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="fragment" data-fragment-index="5">
-                            next siglongjmp to saved jmp_buf will start fn
-                        </li>
-                    </ul>
-                </div>
-            </section>
-            <section>
-                <h3>Coroutines Creation - ucontext </h3>
-                <div class="fragment alt">
+       <section data-transition="slide-in fade-out" transition-speed="fast">
+           <h2>Coroutines in QEMU</h2>
+           <div class="fragment" data-fragment-index="1">Multiple implementations: </div> 
+           <div id="list">
+               <ul>
+                   <li class="fragment">ucontext
+                       <ul>
+                           <li>Default, most "mileage"</li>
+                           <li>Not on all platforms</li>
+                       </ul>
+                   </li>
+                   <li class="fragment">sigaltstack
+                       <ul>
+                           <li>Newer, as of 2013 (Alex Barcelo)</li>
+                           <li>Available on most platforms</li>
+                           <li>Not as well tested?</li>
+                       </ul>
+                   </li>
+               </ul>
+           </div>
+       </section>
+       <section data-transition="fade-in slide-out" transition-speed="fast">
+           <h2>Coroutines in QEMU</h2>
+           Less common implementations:
+           <div id="list">
+               <ul>
+                   <li class="fragment">win32
+                       <ul>
+                           <li>Uses Windows Fibers</li>
+                           <li>Windows-only</li>
+                       </ul>
+                   </li>
+                   <li class="fragment">gthreads
+                       <ul>
+                           <li>Slow</li>
+                           <li>Not really functional</li>
+                           <li>Debug only (anyone using it?)</li>
+                       </ul>
+                   </li>
+               </ul>
+           </div>
+       </section>
+       <section>
+           <h3>Coroutines Creation - ucontext </h3>
+           <div class="fragment small" data-fragment-index="1">
+               Or, fun with trampolines
+           </div>
+           <br>
+           <div id="list">
+               <ul>
+                   <li class="fragment" data-fragment-index="2">
+                       getcontext  / makecontext initializes stack
+                       <ul>
+                           <li class="fragment" data-fragment-index="2">
+                               coroutine_trampoline
+                           </li>
+                           <li class="fragment" data-fragment-index="2">
+                               current environment saved as uc_link
+                           </li>
+                       </ul>
+                   </li>
+                   <li class="fragment" data-fragment-index="3">
+                       jump on the trampline
+                       <ul>
+                           <li class="fragment" data-fragment-index="4">
+                               swapcontext() does the jump
+                           </li>
+                           <li class="fragment" data-fragment-index="4">
+                               jmp_buf saved before coroutine fn call
+                           </li>
+                           <li class="fragment" data-fragment-index="4">
+                               jump back to the caller
+                           </li>
+                       </ul>
+                   </li>
+                   <li class="fragment" data-fragment-index="5">
+                       next siglongjmp to saved jmp_buf will start fn
+                   </li>
+               </ul>
+           </div>
+       </section>
+       <section>
+           <h3>Coroutines Creation - ucontext </h3>
+           <div class="fragment alt">
 <pre><code>Coroutine *qemu_coroutine_new(void)
 {
 
@@ -545,6 +540,16 @@ var link = document.createElement( 'link' );
             Photo licensed under <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>
             <br>
         </small>
+        </div>
+    </section>
+
+    <section data-background-image="../resources/images/TorontoSkyline.jpg"
+             data-state="footer-visible">
+        <div id="footer-white">
+        <h1>KVM Forum Survey</h1>
+        <hr>
+        <img src="../resources/images/KVMForum2016/surveyqr.png"><br>
+        <a href="https://goo.gl/SCCpky">https://goo.gl/SCCpky</a>
         </div>
     </section>
 
