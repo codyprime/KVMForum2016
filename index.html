@@ -314,11 +314,82 @@ var link = document.createElement( 'link' );
             </section>
         <section>
             <h3>Using Coroutines, Part 3</h3>
-            CoMutex API Functions:
+            CoMutex API Functions
+            <div class="fragment small">
+                (Wait, I thought we were cooperative?!)
+            </div>
+            <div id="list">
+                <ul>
+                    <li class="fragment">
+                        Still need to protect some sections
+                        <ul>
+                            <li class="fragment">
+                                E.g., image format driver writing into an image
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="fragment">
+                        qemu_co_mutex_lock()
+                        <ul>
+                            <li class="fragment">
+                                Try to acquire lock
+                            </li>
+                            <li class="fragment">
+                                If fails: go on end of queue, and yield
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="fragment">
+                        qemu_co_mutex_unlock()
+                        <ul>
+                            <li class="fragment">
+                                release lock
+                            </li>
+                            <li class="fragment">
+                                wakeup next co on queue
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
         </section>
         <section>
             <h3>Using Coroutines, Part 4</h3>
-            Lock API Functions:
+            Lock API Functions
+            <div id="list">
+                <ul>
+                    <li class="fragment">
+                        qemu_co_rwlock_rdlock()
+                        <ul>
+                            <li class="fragment">
+                                Waits for no writers
+                            </li>
+                            <li class="fragment">
+                                While waiting, go on end of queue
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="fragment">
+                        qemu_co_rwlock_wrlock()
+                        <ul>
+                            <li class="fragment">
+                                Waits for no writers or readers
+                            </li>
+                            <li class="fragment">
+                                While waiting, go on end of queue
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="fragment">
+                        qemu_co_rwlock_unlock()
+                        <ul>
+                            <li class="fragment">
+                                wakeup all readers, or one writer
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
         </section>
         </section>
 
