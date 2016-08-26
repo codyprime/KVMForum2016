@@ -130,15 +130,53 @@ var link = document.createElement( 'link' );
                     <ul class="fragment" data-fragment-index="1">
                         <li>Threads
                             <ul class="fragment" data-fragment-index="2">
-                                <li> OS Managed </li>
-                                <li> Preemptive (usually) </li>
+                                <li> 
+                                    OS Managed
+                                    <ul>
+                                        <li class="fragment" data-fragment-index="3">
+                                            Kernel has a scheduler
+                                        </li>
+                                        <li class="fragment" data-fragment-index="4">
+                                            Preemptive
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="fragment" id="straight" data-fragment-index="5"></li>
+                                <li class="fragment" id="straight" data-fragment-index="5"></li>
+                                <li class="fragment" data-fragment-index="5">
+                                    Requires more sophisticated locking
+                                </li>
                             </ul>
                         </li>
-                        <li> Coroutines (aka Fibers)
-                            <ul class="fragment" data-fragment-index="3">
-                                <li> Userspace Managed </li>
-                                <li> Cooperative </li>
-                                <li> Lower transactional overhead </li>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                <h2>Coroutines vs. Threads</h2>
+                <div id="list">
+                    <ul>
+                        <li> Coroutines
+                            <ul>
+                                <li class="fragment" data-fragment-index="1">
+                                    Userspace Managed
+                                    <ul>
+                                        <li class="fragment" data-fragment-index="2">
+                                            Nobody schedules coroutines
+                                        </li>
+                                        <li class="fragment" data-fragment-index="3">
+                                            Essentially just a bunch of non-local gotos
+                                        </li>
+                                        <li class="fragment" data-fragment-index="4">
+                                            Cooperative
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="fragment" id="straight" data-fragment-index="5"></li>
+                                <li class="fragment" id="straight" data-fragment-index="5"></li>
+                                <li class="fragment" id="straight" data-fragment-index="5"></li>
+                                <li class="fragment" data-fragment-index="5">
+                                    Lower transactional overhead
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -149,11 +187,40 @@ var link = document.createElement( 'link' );
                 <h4 class="fragment" data-fragment-index="1">QEMU is a hybrid architecture.</h4>
                 <div id="container">
                     <div class="fragment shelf small" data-fragment-index="2" id="shelf">
-                        Threads are used,
+                        Threads are used (worker threads, vcpu threads, etc.),
                     </div> 
                     <div class="fragment shelf small" data-fragment-index="2" id="shelf">
                         &nbsp; &nbsp; &nbsp; in addition to coroutines (mainly in block layer)
                     </div> 
+                </div>
+            </section>
+            <section>
+                <h3>Why does QEMU use coroutines?</h3>
+
+                <div class="fragment small">QEMU uses an event loop structure. In the past, for long running tasks, we had to rely on callback functions <hr></div>
+                <div id="list">
+                    <ul>
+                        <li class="fragment">Callbacks cumbersome, and difficult to follow</li>
+                        <li class="fragment">Coroutines offer linear function flow</li>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                <h3>Where does QEMU use coroutines?</h3>
+                <div class="fragment" data-fragment-index="1">
+                    <font color="#ede490">Block layer, of course!</font>
+                </div>
+                <div id="list">
+                    <ul>
+                        <br>
+                        <br>
+                        <p class="fragment small" data-fragment-index="2">
+                            All block I/O functions are coroutines...
+                        </p>
+                        <p class="fragment small" data-fragment-index="3">
+                            ... as well as some QMP commands (e.g. Block Jobs)
+                        </p>
+                    </ul>
                 </div>
             </section>
         </section>
