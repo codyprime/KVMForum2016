@@ -93,7 +93,7 @@ var link = document.createElement( 'link' );
                             100 meters
                             <ul>
                                 <li>
-                                    Under The Covers: ucontext, sigaltstack
+                                    Under The Covers: ucontext
                                 </li>
                             </ul>
                         </li>
@@ -413,7 +413,7 @@ var link = document.createElement( 'link' );
                        <ul>
                            <li>Newer, as of 2013 (Alex Barcelo)</li>
                            <li>Available on most platforms</li>
-                           <li>Not as well tested?</li>
+                           <li>Paper: "Portable Multithreading: The Signal Stack Trick For User-Space Thread Creation", Engelschall
                        </ul>
                    </li>
                </ul>
@@ -508,25 +508,35 @@ var link = document.createElement( 'link' );
 
     <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
         <section>
-            <h2 class="alt fragment">What's Wrong with Coroutines?</h2>
+            <h2 class="alt fragment">Problems with Coroutines?</h2>
+            <img class="fragment" src="../resources/images/KVMForum2016/gdb-1.png">
         </section>
         <section>
             <div id="list">
                 <ul>
-                    <li class="fragment">
+                    <li>
                         Makes debugging painful at times
                         <ul>
-                            <li>
+                            <li class="fragment" data-fragment-index="1">
                                 Did I mention trampolines?
                             </li>
-                            <li>
+                            <li class="fragment" data-fragment-index="2">
                                 Check out scripts/qemu-gdb.py
                             </li>
-                            <li>
-                                "qemu coroutine <coroutine ptr>"
+                            <li class="fragment" data-fragment-index="2">
+                                "qemu coroutine coroutineptr"
                             </li>
                         </ul>
                     </li>
+                    <div class="fragment" data-fragment-index="1">
+                        <img src="../resources/images/KVMForum2016/gdb-1.png">
+                    </div>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <div id="list">
+                <ul>
                     <li class="fragment">
                         Portability / Platform availability
                         <ul>
