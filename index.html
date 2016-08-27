@@ -197,7 +197,7 @@ var link = document.createElement( 'link' );
             <section>
                 <h3>Why does QEMU use coroutines?</h3>
 
-                <div class="fragment small">QEMU uses an event loop structure. In the past, for long running tasks, we had to rely on callback functions <hr></div>
+                <div class="fragment small">QEMU uses an event loop; In the past, for long running tasks, we had to rely on callback functions <hr></div>
                 <div id="list">
                     <ul>
                         <li class="fragment">Callbacks cumbersome, and difficult to follow</li>
@@ -235,12 +235,12 @@ var link = document.createElement( 'link' );
                 <h3 class="fragment" data-fragment-index="2">The Coroutine API</h3>
             </section>
             <section>
-                <h3>Statues of a Coroutine</h3>
+                <h3>States of a Coroutine</h3>
                 <div data-svg-fragment="../resources/images/KVMForum2016/coroutine-state-diagram.svg#[*|label=base]">
                     <a class="fragment" data-fragment-index="1" title="[*|label=fragment1]"></a>
                     <a class="fragment" data-fragment-index="2" title="[*|label=fragment2]"></a>
-                    <a class="fragment" data-fragment-index="3" title="[*|label=fragment3]"></a>
-                    <a class="fragment" data-fragment-index="5" title="[*|label=fragment5]"></a>
+                    <a class="fragment" data-fragment-index="5" title="[*|label=fragment3]"></a>
+                    <a class="fragment" data-fragment-index="3" title="[*|label=fragment5]"></a>
                 </div>
             </section>
             <section>
@@ -288,7 +288,7 @@ var link = document.createElement( 'link' );
                             Queue entries can be scheduled to "wake up"
                             <ul>
                                 <li class="fragment">
-                                    Woken entries run after yield/terminate
+                                    Awoken entries run after yield/terminate
                                 </li>
                             </ul>
                         </li>
@@ -412,7 +412,7 @@ var link = document.createElement( 'link' );
                    <li class="fragment">sigaltstack
                        <ul>
                            <li>Newer, as of 2013 (Alex Barcelo)</li>
-                           <li>Available on most platforms</li>
+                           <li>Available on most (all?) POSIX platforms</li>
                            <li>Paper: "Portable Multithreading: The Signal Stack Trick For User-Space Thread Creation", Engelschall
                        </ul>
                    </li>
@@ -509,7 +509,7 @@ var link = document.createElement( 'link' );
     <section data-background-image="../resources/images/redhat/1403716-greybackground.png">
         <section>
             <h2 class="alt fragment">Problems with Coroutines?</h2>
-            <img class="fragment" src="../resources/images/KVMForum2016/gdb-1.png">
+            <img class="fragment" src="../resources/images/KVMForum2016/gdb-3.png">
         </section>
         <section>
             <div id="list">
@@ -524,7 +524,7 @@ var link = document.createElement( 'link' );
                                 Check out scripts/qemu-gdb.py
                             </li>
                             <li class="fragment" data-fragment-index="2">
-                                "qemu coroutine coroutineptr"
+                                "qemu coroutine coroutine ptr"
                             </li>
                         </ul>
                     </li>
